@@ -4,13 +4,16 @@
     ViewBag.Title = "Index";
 }
 
-<h2>Index</h2>
 
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
+    <p>
+        <h4>Catalog Parameters</h4>
+        <hr />
+        @Html.ActionLink("Create New", "Create")
+    </p>
 <table id="example1" class="table table-bordered table-striped">
     <tr>
+        <th></th>
+
         <th>
             @Html.DisplayNameFor(model => model.DESCR_PARAM)
         </th>
@@ -23,7 +26,6 @@
         <th>
             @Html.DisplayNameFor(model => model.VAL3)
         </th>
-        <th></th>
     </tr>
 
 @foreach (var item in Model) {
