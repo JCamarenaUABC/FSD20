@@ -1,0 +1,257 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="DOCTORModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="TB_DOCTOR">
+          <Key>
+            <PropertyRef Name="ID_DOCTOR" />
+          </Key>
+          <Property Name="ID_DOCTOR" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="DOCTORNAME" Type="varchar" MaxLength="250" Nullable="false" />
+          <Property Name="BORNDATE" Type="date" Nullable="false" />
+          <Property Name="LOCATIONDOCTOR" Type="varchar" MaxLength="250" />
+          <Property Name="DESCRIPTION" Type="varchar" MaxLength="4000" />
+        </EntityType>
+        <EntityType Name="TB_DOCTOR_SPECIALITY">
+          <Key>
+            <PropertyRef Name="ID_DOCTOR" />
+            <PropertyRef Name="ID_SPECIALITY" />
+          </Key>
+          <Property Name="ID_DOCTOR" Type="int" Nullable="false" />
+          <Property Name="ID_SPECIALITY" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="TB_PARAMETERS">
+          <Key>
+            <PropertyRef Name="ID_PARAM" />
+          </Key>
+          <Property Name="ID_PARAM" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="DESCR_PARAM" Type="varchar" MaxLength="350" Nullable="false" />
+          <Property Name="VAL1" Type="varchar" MaxLength="350" />
+          <Property Name="VAL2" Type="varchar" MaxLength="350" />
+          <Property Name="VAL3" Type="varchar" MaxLength="350" />
+        </EntityType>
+        <EntityType Name="TB_SPECIALITY">
+          <Key>
+            <PropertyRef Name="ID_SPECIALITY" />
+          </Key>
+          <Property Name="ID_SPECIALITY" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="DESCR_SPECIALITY" Type="varchar" MaxLength="350" Nullable="false" />
+        </EntityType>
+        <EntityType Name="TB_USERS">
+          <Key>
+            <PropertyRef Name="ID_USER" />
+          </Key>
+          <Property Name="ID_USER" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="USERNAME" Type="varchar" MaxLength="250" Nullable="false" />
+          <Property Name="USERPASSWORD" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="BORNDATE" Type="date" Nullable="false" />
+          <Property Name="USEREMAIL" Type="varchar" MaxLength="250" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_TB_DOCTOR_SPECIALITY_TB_DOCTOR">
+          <End Role="TB_DOCTOR" Type="Self.TB_DOCTOR" Multiplicity="1" />
+          <End Role="TB_DOCTOR_SPECIALITY" Type="Self.TB_DOCTOR_SPECIALITY" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TB_DOCTOR">
+              <PropertyRef Name="ID_DOCTOR" />
+            </Principal>
+            <Dependent Role="TB_DOCTOR_SPECIALITY">
+              <PropertyRef Name="ID_DOCTOR" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TB_DOCTOR_SPECIALITY_TB_SPECIALITY">
+          <End Role="TB_SPECIALITY" Type="Self.TB_SPECIALITY" Multiplicity="1" />
+          <End Role="TB_DOCTOR_SPECIALITY" Type="Self.TB_DOCTOR_SPECIALITY" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TB_SPECIALITY">
+              <PropertyRef Name="ID_SPECIALITY" />
+            </Principal>
+            <Dependent Role="TB_DOCTOR_SPECIALITY">
+              <PropertyRef Name="ID_SPECIALITY" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Function Name="SP_GET_SEARCH_DOCTOR" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="DoctorName" Type="varchar" Mode="In" />
+          <Parameter Name="Speciality" Type="varchar" Mode="In" />
+        </Function>
+        <EntityContainer Name="DOCTORModelStoreContainer">
+          <EntitySet Name="TB_DOCTOR" EntityType="Self.TB_DOCTOR" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TB_DOCTOR_SPECIALITY" EntityType="Self.TB_DOCTOR_SPECIALITY" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TB_PARAMETERS" EntityType="Self.TB_PARAMETERS" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TB_SPECIALITY" EntityType="Self.TB_SPECIALITY" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TB_USERS" EntityType="Self.TB_USERS" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_TB_DOCTOR_SPECIALITY_TB_DOCTOR" Association="Self.FK_TB_DOCTOR_SPECIALITY_TB_DOCTOR">
+            <End Role="TB_DOCTOR" EntitySet="TB_DOCTOR" />
+            <End Role="TB_DOCTOR_SPECIALITY" EntitySet="TB_DOCTOR_SPECIALITY" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TB_DOCTOR_SPECIALITY_TB_SPECIALITY" Association="Self.FK_TB_DOCTOR_SPECIALITY_TB_SPECIALITY">
+            <End Role="TB_SPECIALITY" EntitySet="TB_SPECIALITY" />
+            <End Role="TB_DOCTOR_SPECIALITY" EntitySet="TB_DOCTOR_SPECIALITY" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="DOCTORModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="TB_DOCTOR">
+          <Key>
+            <PropertyRef Name="ID_DOCTOR" />
+          </Key>
+          <Property Name="ID_DOCTOR" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="DOCTORNAME" Type="String" MaxLength="250" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="BORNDATE" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="LOCATIONDOCTOR" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+          <Property Name="DESCRIPTION" Type="String" MaxLength="4000" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="TB_SPECIALITY" Relationship="Self.TB_DOCTOR_SPECIALITY" FromRole="TB_DOCTOR" ToRole="TB_SPECIALITY" />
+        </EntityType>
+        <EntityType Name="TB_PARAMETERS">
+          <Key>
+            <PropertyRef Name="ID_PARAM" />
+          </Key>
+          <Property Name="ID_PARAM" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="DESCR_PARAM" Type="String" MaxLength="350" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="VAL1" Type="String" MaxLength="350" FixedLength="false" Unicode="false" />
+          <Property Name="VAL2" Type="String" MaxLength="350" FixedLength="false" Unicode="false" />
+          <Property Name="VAL3" Type="String" MaxLength="350" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="TB_SPECIALITY">
+          <Key>
+            <PropertyRef Name="ID_SPECIALITY" />
+          </Key>
+          <Property Name="ID_SPECIALITY" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="DESCR_SPECIALITY" Type="String" MaxLength="350" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="TB_DOCTOR" Relationship="Self.TB_DOCTOR_SPECIALITY" FromRole="TB_SPECIALITY" ToRole="TB_DOCTOR" />
+        </EntityType>
+        <EntityType Name="TB_USERS">
+          <Key>
+            <PropertyRef Name="ID_USER" />
+          </Key>
+          <Property Name="ID_USER" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="USERNAME" Type="String" MaxLength="250" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="USERPASSWORD" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="BORNDATE" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="USEREMAIL" Type="String" MaxLength="250" FixedLength="false" Unicode="false" Nullable="false" />
+        </EntityType>
+        <Association Name="TB_DOCTOR_SPECIALITY">
+          <End Role="TB_DOCTOR" Type="Self.TB_DOCTOR" Multiplicity="*" />
+          <End Role="TB_SPECIALITY" Type="Self.TB_SPECIALITY" Multiplicity="*" />
+        </Association>
+        <EntityContainer Name="DOCTOREntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="TB_DOCTOR" EntityType="Self.TB_DOCTOR" />
+          <EntitySet Name="TB_PARAMETERS" EntityType="Self.TB_PARAMETERS" />
+          <EntitySet Name="TB_SPECIALITY" EntityType="Self.TB_SPECIALITY" />
+          <EntitySet Name="TB_USERS" EntityType="Self.TB_USERS" />
+          <AssociationSet Name="TB_DOCTOR_SPECIALITY" Association="Self.TB_DOCTOR_SPECIALITY">
+            <End Role="TB_DOCTOR" EntitySet="TB_DOCTOR" />
+            <End Role="TB_SPECIALITY" EntitySet="TB_SPECIALITY" />
+          </AssociationSet>
+          <FunctionImport Name="SP_GET_SEARCH_DOCTOR" ReturnType="Collection(DOCTORModel.SP_GET_SEARCH_DOCTOR_Result)">
+            <Parameter Name="DoctorName" Mode="In" Type="String" />
+            <Parameter Name="Speciality" Mode="In" Type="String" />
+          </FunctionImport>
+        </EntityContainer>
+        <ComplexType Name="SP_GET_SEARCH_DOCTOR_Result">
+          <Property Type="Int32" Name="ID_DOCTOR" Nullable="false" />
+          <Property Type="String" Name="DOCTORNAME" Nullable="false" MaxLength="250" />
+          <Property Type="DateTime" Name="BORNDATE" Nullable="false" />
+          <Property Type="String" Name="LOCATIONDOCTOR" Nullable="true" MaxLength="250" />
+          <Property Type="String" Name="DESCRIPTION" Nullable="true" MaxLength="4000" />
+          <Property Type="Int32" Name="ID_SPECIALITY" Nullable="false" />
+          <Property Type="String" Name="DESCR_SPECIALITY" Nullable="false" MaxLength="350" />
+        </ComplexType>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="DOCTORModelStoreContainer" CdmEntityContainer="DOCTOREntities">
+          <EntitySetMapping Name="TB_DOCTOR">
+            <EntityTypeMapping TypeName="DOCTORModel.TB_DOCTOR">
+              <MappingFragment StoreEntitySet="TB_DOCTOR">
+                <ScalarProperty Name="ID_DOCTOR" ColumnName="ID_DOCTOR" />
+                <ScalarProperty Name="DOCTORNAME" ColumnName="DOCTORNAME" />
+                <ScalarProperty Name="BORNDATE" ColumnName="BORNDATE" />
+                <ScalarProperty Name="LOCATIONDOCTOR" ColumnName="LOCATIONDOCTOR" />
+                <ScalarProperty Name="DESCRIPTION" ColumnName="DESCRIPTION" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TB_PARAMETERS">
+            <EntityTypeMapping TypeName="DOCTORModel.TB_PARAMETERS">
+              <MappingFragment StoreEntitySet="TB_PARAMETERS">
+                <ScalarProperty Name="ID_PARAM" ColumnName="ID_PARAM" />
+                <ScalarProperty Name="DESCR_PARAM" ColumnName="DESCR_PARAM" />
+                <ScalarProperty Name="VAL1" ColumnName="VAL1" />
+                <ScalarProperty Name="VAL2" ColumnName="VAL2" />
+                <ScalarProperty Name="VAL3" ColumnName="VAL3" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TB_SPECIALITY">
+            <EntityTypeMapping TypeName="DOCTORModel.TB_SPECIALITY">
+              <MappingFragment StoreEntitySet="TB_SPECIALITY">
+                <ScalarProperty Name="ID_SPECIALITY" ColumnName="ID_SPECIALITY" />
+                <ScalarProperty Name="DESCR_SPECIALITY" ColumnName="DESCR_SPECIALITY" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TB_USERS">
+            <EntityTypeMapping TypeName="DOCTORModel.TB_USERS">
+              <MappingFragment StoreEntitySet="TB_USERS">
+                <ScalarProperty Name="ID_USER" ColumnName="ID_USER" />
+                <ScalarProperty Name="USERNAME" ColumnName="USERNAME" />
+                <ScalarProperty Name="USERPASSWORD" ColumnName="USERPASSWORD" />
+                <ScalarProperty Name="BORNDATE" ColumnName="BORNDATE" />
+                <ScalarProperty Name="USEREMAIL" ColumnName="USEREMAIL" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <AssociationSetMapping Name="TB_DOCTOR_SPECIALITY" TypeName="DOCTORModel.TB_DOCTOR_SPECIALITY" StoreEntitySet="TB_DOCTOR_SPECIALITY">
+            <EndProperty Name="TB_DOCTOR">
+              <ScalarProperty Name="ID_DOCTOR" ColumnName="ID_DOCTOR" />
+            </EndProperty>
+            <EndProperty Name="TB_SPECIALITY">
+              <ScalarProperty Name="ID_SPECIALITY" ColumnName="ID_SPECIALITY" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <FunctionImportMapping FunctionImportName="SP_GET_SEARCH_DOCTOR" FunctionName="DOCTORModel.Store.SP_GET_SEARCH_DOCTOR">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="DOCTORModel.SP_GET_SEARCH_DOCTOR_Result">
+                <ScalarProperty Name="ID_DOCTOR" ColumnName="ID_DOCTOR" />
+                <ScalarProperty Name="DOCTORNAME" ColumnName="DOCTORNAME" />
+                <ScalarProperty Name="BORNDATE" ColumnName="BORNDATE" />
+                <ScalarProperty Name="LOCATIONDOCTOR" ColumnName="LOCATIONDOCTOR" />
+                <ScalarProperty Name="DESCRIPTION" ColumnName="DESCRIPTION" />
+                <ScalarProperty Name="ID_SPECIALITY" ColumnName="ID_SPECIALITY" />
+                <ScalarProperty Name="DESCR_SPECIALITY" ColumnName="DESCR_SPECIALITY" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

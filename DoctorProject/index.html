@@ -1,0 +1,189 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- Google Font: Source Sans Pro -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css">
+  <!-- Theme style -->
+  <link rel="stylesheet" href="Content/AdminLTE/adminlte.min.css">
+
+  <!-- DataTables -->
+  <link rel="stylesheet" href="Scripts/datatables-bs4/css/dataTables.bootstrap4.min.css">
+</head>
+<body class="hold-transition login-page">
+  <div class="col-10">
+      <div class="row">
+          <div class="col-10">
+              <div class="float-right">
+                  <a href="https://localhost:44363/Account/Login">Login</a>
+              </div>
+          </div>
+      </div>
+    <!-- /.login-logo -->
+  <div class="card card-outline card-primary">
+    <div class="card-header text-center">
+      <a href="index.html" class="h1">      <img src="Content/Images/DoctorFinderLog.png" width="150" height="150" alt="Logo" class="brand-image img-circle elevation-3" style="opacity: .8"><b>Doctor</b>FINDER</a>
+    </div>
+    <div class="card-body">
+
+        <div class="input-group mb-3">
+          <input type="text" id="speciality" class="form-control" placeholder="Speciality">
+          <div class="input-group-append">
+          </div>
+        </div>
+        <div class="input-group mb-3">
+          <input type="text" id="SearchbyName" class="form-control" placeholder="Serach by name">
+          <div class="input-group-append">
+          </div>
+        </div>
+
+        <!--div class="input-group mb-3">
+          
+          <input type="hidden" id="latitud" >
+          <input type="hidden" id="longitud" >
+
+          <div class="input-group-append">
+            <button onclick="getLocation()">Get my location</button>
+            <p id="demo"></p>
+
+            <iframe id="mymap" src="" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+            
+          </div>
+        </div-->
+
+
+        <div class="row">
+          <div class="col-12">
+            <button id="Search" type="submit" class="btn btn-primary btn-block"><span class="fas fa-search"></span></button>
+          </div>
+        </div>
+        <div class="row">
+          <!-- /.col -->
+          <div class="col-12">
+            
+            <table id="example" class="display" style="width:100%">
+              <thead>
+              </thead>
+            </table>
+
+          </div>
+          <!-- /.col -->
+        </div>
+
+      <!-- /.social-auth-links -->
+    </div>
+    <!-- /.card-body -->
+  </div>
+  <!-- /.card -->
+</div>
+<!-- /.login-box -->
+
+<!-- jQuery -->
+<script src="Scripts/jquery-3.4.1.min.js"></script>
+<!-- Bootstrap 4 -->
+<script src="Scripts/bootstrap.min.js"></script>
+<!-- AdminLTE App -->
+<script src="Scripts/AdminLTE/adminlte.min.js"></script>
+
+<!-- DataTables  & Plugins -->
+<script src="Scripts/datatables/jquery.dataTables.min.js"></script>
+<script src="Scripts/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
+
+<!--script src="Scripts/datatables-responsive/js/dataTables.responsive.min.js"></script>
+<script src="Scripts/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
+<script src="Scripts/datatables-buttons/js/dataTables.buttons.min.js"></script>
+<script src="Scripts/datatables-buttons/js/buttons.bootstrap4.min.js"></script>
+<script src="Scripts/datatables-buttons/js/buttons.html5.min.js"></script>
+<script src="Scripts/datatables-buttons/js/buttons.print.min.js"></script>
+<script src="Scripts/datatables-buttons/js/buttons.colVis.min.js"></script-->
+
+
+
+
+
+<script>
+
+$(document).ready(function () {
+
+  var x = document.getElementById("demo");
+  var mymap = document.getElementById("mymap");
+  
+  function getLocation() {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(showPosition);
+    } else { 
+      alert("Geolocation is not supported by this browser.");
+    }
+  }
+  
+  function showPosition(position) {
+    document.getElementById("latitud").value=position.coords.latitude;
+    document.getElementById("longitud").value=position.coords.longitude;
+
+    var direccion="https://www.google.com/maps/embed?pb=!1m10!1m8!1m3!1d6722.188089746732!2d"+position.coords.longitude+"!3d"+position.coords.latitude+"!3m2!1i1024!2i768!4f13.1!5e0!3m2!1ses!2smx!4v1615146883753!5m2!1ses!2smx";
+    mymap.src=direccion;
+
+   /* x.innerHTML = "Latitude: " + position.coords.latitude + 
+    "<br>Longitude: " + position.coords.longitude +
+    "Direccion:"+ direccion;*/
+  }
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    
+
+    $("#Search").click(function (event) {    
+        var speciality = document.getElementById("speciality").value;
+        var SearchbyName =  document.getElementById("SearchbyName").value;
+        var Data = new Object();  
+        Data.Name = SearchbyName; //SearchbyName;  
+        Data.Speciality = speciality; 
+
+
+        $.ajax({
+        url: 'https://localhost:44363/TB_DOCTOR/SearchDoctor', 
+        type: 'POST',  
+        dataType: 'json',  
+        data: Data,
+        success: function(data){
+            console.log(jQuery.parseJSON( JSON.stringify(data.SearchResult)));
+
+
+            $('#example').dataTable( {
+                "url": "https://localhost:44363/TB_DOCTOR/SearchDoctor",
+                //data:  response,
+                data: jQuery.parseJSON( JSON.stringify(data.SearchResult)),
+                //data: JSON.stringify(data.SearchResult),
+                destroy: true,
+                select: true,
+                //"ordering": false,          
+                type: 'POST',  
+                dataType: 'json',  
+                //dataSrc:  jQuery.parseJSON(esponse,
+                "columns": [
+                        //{ title: "ID_DOCTOR", "data": "ID_DOCTOR", "visible": false },
+                          //{ title: "ID_DOCTOR", "data": "ID_DOCTOR" },
+                          { title: "DOCTORNAME", "data": "DOCTORNAME" },
+                          { title: "DESCR_SPECIALITY", "data": "DESCR_SPECIALITY" }
+                      ]
+            });
+            
+
+        },
+        error: function(details){
+            console.log("error:", details);
+        }
+      });
+    });
+
+
+  });
+
+  </script>
+  
+
+</body>
+</html>
